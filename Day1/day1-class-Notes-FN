@@ -1,0 +1,412 @@
+Micro services
+----------------
+|-> Small independent application
+    -----------------------------
+     |->one specific business function
+
+
+1. Monolithic 
+  ------------------
+  | User 
+  | Order
+  | Payment
+  | Inventory
+  | Notification
+  +---------------
+if you change the payment module - deploy the whole application
+
+2. Micro service
+------------------
+   | User = Python + Flask 
+   +--------------------------
+             | REST API
+   | Order = Python + FastAPI
+   +-------------------------
+            | RESTAPI
+   |Payment service = Python + FastAPI
+   +---------------------------
+            | REST API
+   |Inventory = PYthon + Flask
+   +-------------------------------
+==================================================================================
+Python
+     |--> Class , Object
+	  ------  -------
+	   type    value
+
+int float complex bool NoneType 
+str bytes list tuple dict set 
+
+eid = 101
+ename = 'Mr.Abc'
+ecost = 1000.45
+login_status = True
+
+|
+Variable = value  <== initialization 
+========
+|->Placeholder - holding a value
+
+python is dynamic type programming 
+          ------------
+
+list - like array
+     - collection of different types of value
+		     =================
+     - index based 
+     - mutable - we can add/modify/delete nth data
+     - []
+
+emp_details = [101,'Mr.ABC',1000.34,True] <== list 
+
+----Vs
+
+tuple - like array
+     - collection of different types of value
+		     =================
+     - index based 
+     - immutable - we can't add/modify/delete nth data
+     - ()
+
+emp_details = (101,'Mr.ABC',1000.34,True) <== tuple - fixed record set
+
+-----Vs 
+dict - like hash / maps /json object
+     - collection of different types of value
+     - key based 
+     - key:value //data
+     - mutable - we can add/modify/delete nth data
+     - {}
+Syntax:-
+--------
+	{'Key1':Value,'Key2':Value,'Key3':Value,'Key4':Value...'Kn':'Vn'}
+
+Key - must be unique 
+value - value can duplicate 
+
+emp_details = {'eid': 101,'ename':'Mr.ABC','ecost':1000.32,'status':True}
+              
+	+-------------|----------------+
+	|  Key	      |    Value       |
+	+------------------------------+
+	|  eid        |    101
+	+-------------------------------
+	|  ename      |  Mr.ABC
+	+-------------------------------
+	|  ecost      |   1000.32
+	+------------------------------
+	| status      |  True
+	+-------------------------------+
+
+
+
+Linux/macos -> python3 		python
+	      ---------		---------
+				  |->2.x
+Vs
+window ->python
+	    |--->3.x
+
+
+list - list,tuple,dict
+tuple -list,tuple,dict
+dict-  list,tuple,dict
+--------------------------//MD 
+
+
+1. Topic- definition
+2. Topic - Syntax
+3. Topic - Refer existing example
+|
+4. Topic - activity 
+------------------------------------------------------------------------------------------------
+>>> ## List of List
+>>> #-----------------
+>>>
+>>> prod_info = ['p101','pA',1000] # 1D
+>>>
+>>> prod_info = [['p101','pA',1000],['p102','pB',2000],['p103','pC',3000]]
+>>>
+>>> prod_info.append(['p104','pD',4000])
+>>>
+>>> prod_info
+[['p101', 'pA', 1000], ['p102', 'pB', 2000], ['p103', 'pC', 3000], ['p104', 'pD', 4000]]
+>>>
+>>> len(prod_info)
+4
+>>> prod_info[0]
+['p101', 'pA', 1000]
+>>>
+>>> for var in prod_info:
+...     print(var)
+...
+['p101', 'pA', 1000]
+['p102', 'pB', 2000]
+['p103', 'pC', 3000]
+['p104', 'pD', 4000]
+>>>
+>>> print(prod_info[0][0])
+p101
+>>> print(prod_info[0][1])
+pA
+>>> print(prod_info[1][0])
+p102
+>>> prod_info[2]
+['p103', 'pC', 3000]
+>>> prod_info[2][2]
+3000
+>>> prod_info[2][2] = 3500 # mutable - we can modify
+>>>
+>>> prod_info
+[['p101', 'pA', 1000], ['p102', 'pB', 2000], ['p103', 'pC', 3500], ['p104', 'pD', 4000]]
+>>>
+>>>
+>>> ## List of tuple
+>>> prod_info = [('p101','pA',1000),('p102','pB',2000),('p103','pC',3000)]
+>>>
+>>> prod_info[0]
+('p101', 'pA', 1000)
+>>> prod_info[0][0]
+'p101'
+>>>
+>>> prod_info[1]
+('p102', 'pB', 2000)
+>>> prod_info[1][-1]
+2000
+>>>
+>>> prod_info[1][-1] =6789
+Traceback (most recent call last):
+  File "<python-input-78>", line 1, in <module>
+    prod_info[1][-1] =6789
+    ~~~~~~~~~~~~^^^^
+TypeError: 'tuple' object does not support item assignment
+>>>
+==========================
+>>> Prod_info = {} # empty dict
+>>> print(Prod_info)
+{}
+>>> len(Prod_info)
+0
+>>> # To add new data
+>>> # ------------------
+>>> # dictName.setdefault(Key,Value)
+>>>
+>>> Prod_info.setdefault('pname','pA')
+'pA'
+>>> Prod_info
+{'pname': 'pA'}
+>>>
+>>> # Another way to add new data to na existing dict
+>>> # -------------------------------------------------
+>>> # dictName[newKey] = value
+>>>
+>>> Prod_info['pid'] = 101
+>>> Prod_info['pcost'] = 1000.42
+>>> print(Prod_info)
+{'pname': 'pA', 'pid': 101, 'pcost': 1000.42}
+>>>
+>>> Prod_info['pcost'] = 2000.32 # modification
+>>> # ----------------------------------
+>>> Prod_info
+{'pname': 'pA', 'pid': 101, 'pcost': 2000.32}
+>>>
+=============================================
+>>> ## List of dict
+>>> #---------------
+>>>
+>>> prod_info = []
+>>>
+>>> prod_info.append({'pid':101,'pname':'pA','pcost':1000})
+>>> prod_info
+[{'pid': 101, 'pname': 'pA', 'pcost': 1000}]
+>>>
+>>>
+>>> prod_info.append({'pid':102,'pname':'pB','pcost':2000})
+>>>
+>>> prod_info
+[{'pid': 101, 'pname': 'pA', 'pcost': 1000}, {'pid': 102, 'pname': 'pB', 'pcost': 2000}]
+>>>
+>>> prod_info[0]
+{'pid': 101, 'pname': 'pA', 'pcost': 1000}
+>>>
+>>> prod_info[1]
+{'pid': 102, 'pname': 'pB', 'pcost': 2000}
+>>>
+>>> prod_info[1]['pid'] ## variablename[index]['String']
+102
+>>>
+>>> prod_info[1]['pcost']
+2000
+>>> prod_info[1]['pcost'] = 3500 # modify
+>>>
+>>> prod_info
+[{'pid': 101, 'pname': 'pA', 'pcost': 1000}, {'pid': 102, 'pname': 'pB', 'pcost': 3500}]
+>>>
+>>>
+>>> prod_info = {'pid':101,'pname':'pA','pcost':1000} ## 1D  -> 1Key:1Value
+>>>
+>>> # Vs
+>>>
+>>> prod_info ={'pid':[101,102,103],'pname':['pA','pB','pC'],'pcost':[1000,2000,3000]} # MD -> 1Key: list
+>>>
+>>>
+>>> prod_info['pid'][0]
+101
+>>> prod_info['pid'][1]
+102
+>>> prod_info['pcost'][0]
+1000
+>>> prod_info['pcost'][0] = 1250.32 # modify
+>>>
+>>> prod_info
+{'pid': [101, 102, 103], 'pname': ['pA', 'pB', 'pC'], 'pcost': [1250.32, 2000, 3000]}
+>>>
+-----------------------------------------------------------------------------------
+OOPs 
+- class
+- object
+- method
+- decorator
+==============
+
+class - type 
+-----
+  -> user defined class - mutable
+  
+class <className>:
+    '''class docs'''
+    attributes
+
+
+class product:
+    pid  = 101
+    pname = 'pA'
+
+print(product.pid)    # 101
+print(product.pname)  # pA
+      =======
+           |->ClassName
+
+product.pname = 'prod-A' # we can modify
+
+product.pcost = 1000 # we can create / add new attribute
+
+object
+-------
+
+		+---------------+
+		|		|  <== blueprint sheet - className
+		+---------------+
+		 |           |
+
+	+----------+     +---------+
+	|	   |	 |	   | .. <== object 
+	+----------+	 +---------+
+
+class product:
+   pid = 101
+
+product - className
+
+product() - object creation 
+       == //constructor 
+
+decorator
+-----------
+- function - arg as another function
+		    ---------------
+			
+- meta programming - keep adding new features to an existing code
+
+ Req1: 
+------
+	AboutUs	   Service     Products   Contactus  --- app1.py -> live 
+
+|
+after 3 months
+
+        AboutUs	   Service     Products  [News]  Contactus
+					    |___City1 <-- 
+					    |___City2 <--
+...
+....
+adding more features 
+
+def decoratorFunction(argument):
+	def wrapper(*args,**kwargs):
+		argument()
+	return wrapper
+
+
+def f1():
+	...
+	...
+
+
+f1 = decoratorFunction(f1)
+f1()
+-----
+ <or>
+
+@decoratorFunction
+def f2():
+	...
+	...
+
+------------------------------------------------------------------
+>>> def f1(a1):
+...     def f2(): # wrapper
+...         a1()
+...     return f2
+...
+>>>
+>>> @f1
+... def app1():
+...     print("this is app1 features")
+...
+>>> @f1
+... def app2():
+...     print("This is new app2 features")
+...
+>>>
+>>> app1()
+this is app1 features
+>>>
+>>> app2()
+This is new app2 features
+>>>
+
+-------------------------------------------------------------------
+
+E:> file: ab.py                  E:\> file: p1.py              E:\> file: demo1.py
+   ---------------               --------------------       --------------------------
+   def display():                import ab                     def r1():
+      print("Display block")     ab.display()                       print("r1 report")
+  ----------------		------------------             def r2():
+				E:\>python p1.py                    print("r2 report")
+E:\> python ab.py               Display block                  r1()
+<empty> - no output                                            r2()
+                                                              ------------------------
+						
+
+E:\> file: p2.py
+---------------------
+import demo1 <---  Vs import ab
+r1 report             ab.display()
+r2 report
+------------------------------------
+E:\> file: demo1.py  -----------------> file: p2.py
+------------------------                -------------
+def r1():                               import demo1 # we can load
+	print("r1 report")              demo1.r1()   # we can invoke specific attribute/function/variable 
+					----------------
+def r2():
+	print("r2 report")
+
+if __name__ == '__main__':
+	r1()
+	r2()
+------------------------------
+E:\>python demo1.py
+r1 report
+r2 report
