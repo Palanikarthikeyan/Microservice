@@ -1,0 +1,343 @@
+Client / Postman
+
+     |
+  POST / Orders
+     |
+ +-----------------------+
+ |  Order service 
+ |  Flask: 5002                -  Order_service.py
+ +-----------------------+
+     |
+   HTTP GET request
+     |
+ +-----------------------+
+ |  Product Service
+ |  Flask: 5001			- product_service.py
+ +-----------------------+
+     |
+    Product Data
+
+File: product_service.py
+--------------------------------
+
+# product_data - fetch from DB
+# -------------//JSON
+
+
+/products/<productID>/ <== GET
+            |
+       test - product is matched -> return json_data
+	      product is not found,404
+
+
+
+File: Order_service.py
+------------------------------
+
+# Create a order - POST 
+
+	- Call Product Micro service 
+	 response = requests.get(f"http://localhost:5001/products/{product_id}")
+
+# product = response.json()
+# --------
+
+----
+Execute both files 
+
+Client -->POST/Orders--->Order service:5002 ---GET/Products/1 --->Product Service: 5001 -->Product Info
+ --->Orderservice ->Calculate ->Client
+
+
+
+######################################################
+>>> import requests
+>>>
+>>> requests.get("http://127.0.0.1:5001/products/4")
+<Response [404]>
+>>>
+>>> requests.get("http://127.0.0.1:5001/products/3")
+<Response [200]>
+>>>
+#######################################################
+
+import requests
+
+requests
+---------
+ |->REST APIs - GET POST PUT DELETE
+ |
+ |->download web content - GET
+    ====================
+	
+
+requests.get()
+requests.post()
+requests.put()
+requests.delete()
+
+
+from flask import Flask,request,jsonify
+
+GET - Get all users
+---
+POST - Create a new resource (new user)
+----
+GET - Get specific user
+---
+PUT - update a user
+---
+DELETE
+
+
+>>> import requests
+>>>
+>>> requests.get('http://127.0.0.1:5001/users')
+<Response [200]>
+>>>
+>>> requests.get('http://127.0.0.1:5001/users').text
+'[]\n'
+>>> requests.get('http://127.0.0.1:5001/users').json()
+[]
+>>>
+>>> requests.post('http://127.0.0.1:5001/users',json={"name":"Karthik","email":"karthik@gmail.com"})
+<Response [201]>
+>>>
+>>> requests.get('http://127.0.0.1:5001/users').json()
+[{'email': 'karthik@gmail.com', 'id': 1, 'name': 'Karthik'}]
+>>>
+>>> requests.get('http://127.0.0.1:5001/users').json()
+[{'email': 'karthik@gmail.com', 'id': 1, 'name': 'Karthik'}, {'email': None, 'id': 2, 'name': None}, {'email': 'raj@gmail.com', 'id': 3, 'name': 'Raj'}]
+>>>
+>>> requests.get('http://127.0.0.1:5001/users/1').json()
+{'email': 'karthik@gmail.com', 'id': 1, 'name': 'Karthik'}
+>>>
+>>> requests.get('http://127.0.0.1:5001/users/3').json()
+{'email': 'raj@gmail.com', 'id': 3, 'name': 'Raj'}
+>>> requests.get('http://127.0.0.1:5001/users/4').json()
+{'message': 'User not found'}
+>>> requests.put('http://127.0.0.1:5001/users/2',json={"name":"Leo","email":"leo@ymail.com"})
+<Response [200]>
+>>>
+>>>	
+>>> requests.get('http://127.0.0.1:5001/users/2').json()
+{'email': 'leo@ymail.com', 'id': 2, 'name': 'Leo'}
+>>>
+
+>>> requests.get('http://127.0.0.1:5001/users/1').json()
+{'message': 'User not found'}
+>>>
+>>>
+-------------------------------------------------------------------------------------------------------------
+JWT
+---
+
+JSON Web Token
+---------------
+authentication
+authorization
+-----------------
+
+User -> Login ->Flask
+|
+User sends (username:arun password:mypassword) 
+-------------------------------------------------//Valid -> server generates a JWT
+
+For subsequent API calls - the client sends the token - server validates the token and allows access.
+
+GET /profile
+--- ========
+Vs
+with JWT
+\__ GET /profile
+    Authorization: Bearer JWT
+	|
+	server checks the token before returing data
+
+JWT
+----
+|
+Header.PAYLOAD.SIGNATURE
+
+Header
++
+Payload
++
+Secret Key
++
+Signature
+--------------------------
+Login => /login
+ |
+request: { "username":"arun","password":"mypassword"}  -- Step - 1
+		|
+	server validate credentials -- Step - 2
+	---------------------------
+	 |__ Auth: success
+	  |
+	server Creates JWT -- Step - 3
+	-------------------
+	User Info + Expiration + Secret key = JWT
+	  |
+	server returns JWT -- Step - 4
+	------------------
+	   |
+	  {"message":"Login is successful","access_token":"safsadfsdafsfsfd"}
+	-------------------
+	 |
+	Client - Client stores the token --- Step-5
+	-----
+	       - Client calls protected api/endpoint -- Step-6
+		
+			get /profile
+			=============
+			 Server Validates JWT	
+			  Is token valid?
+			  Is signature valid?
+			  Is token expired?
+			   ..
+			  Allow/Reject
+			  	 |____ 401 <== Unauthroized
+
+------------------------------------------------------------------------------------
+			
+JWTManager
+ |
+create_access_token - Creates a JWT after successful authentication
+--------------------
+
+jwt_required - Protects an endpoint
+
+get_jwt_identity - reads the identity stores inside the JWT
+
+timedelta - token expiration time.
+
+app = Flask(__name__)
+---
+
+jwt = JWTManager(app) 
+      ========== ---
+
+1)
+pip install Flask-JWT-Extended Flask-Bcrypt python-dotenv requests
+
+2)
+create .env file
+-----------------
+JWT_SECRET_KEY="this-is-my-key-test-code-fordemo"
+-----------------
+
+3) python demo_jwt.py
+   
+End points
+--------------
+/ 		    ---> public   -> Authentication not required
+/login              ---> Authentication -> username/password
+|
+/profile     ----------> protected --> JWT required
+/dashboard -------------> protected --> JWT required
+
+============================================================================================================
+python 
+- class <-> object
+
+ 10 -------- 0x100		11 ---> 0x456
+
+i = 10
+
+j = 2+8
+
+k = 4+6
+
+print(hex(id(10))) -> 0x100
+print(hex(id(i)))  -> 0x100
+print(hex(id(j))) -> 0x100
+print(hex(id(k))) -> 0x100
+
+
+i = i + 1 # now i is mapping to 0x456
+
+print(hex(id(11)))
+
+t1 t2
+|   |
+i+1 i+1
+
+GIL - like mutex
+----
+CPython
+----------------------------------------------------------------------------------------------
+
+@app.route("/mypage")
+def f1():
+  return "hello"
+----------------------------
+
+Synchronous
+--------------
+Task1 -> 3 secs
+Task2 -> 3 secs
+Task3 -> 3 secs
+
+Task1 
+| 3 secs
+|
+Task2
+| 3 secs
+|
+Task3
+|
+| 3 secs
+-----------
+  9 secs
+------------
+
+Asyncgronous
+----------------
+Task1 ------|
+Task2 ------|
+Task3 ------| 
+  ~ 3 secs
+  -----------
+
+async
+await
+asyncio
+----------// keywords
+
+def f1():
+   ....
+Vs
+async def f1(): 
+	....
+---------------------------------
+
+import asyncio
+
+asyncio.run(f1())
+
+
+import asyncio
+
+async def task1():
+	print("Task 1 started")
+	await asyncio.sleep(1)
+	print("Task-1-completed")
+
+async def task2():
+	print("Task 2 started")
+	await asyncio.sleep(1)
+	print("Task-2-completed")
+
+async def task3():
+	print("Task 3 started")
+	await asyncio.sleep(1)
+	print("Task-3-completed")
+
+async def main():
+	await asyncio.gather(task1(),task2(),task3())
+
+asyncio.run(main())
+            ------
+
+#########################################################################################################
